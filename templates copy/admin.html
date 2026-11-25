@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - AI Career Platform</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        body { background: #eef3f1; color: #1a2a33; }
+        .navbar { background: #14313f; color: #e8f0ee; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar a { color: #9fd8cb; text-decoration: none; font-weight: bold; margin-left: 15px; }
+        .wrap { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border: 1.5px solid #cfdad6; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+        h3 { color: #14313f; margin-bottom: 14px; }
+        label { display: block; margin-top: 10px; font-weight: 600; font-size: 13px; color: #3d4f58; }
+        input, select { width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cfdad6; border-radius: 6px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+        button { background: #2f7d6d; color: white; border: none; padding: 12px; margin-top: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:hover { background: #276b5d; }
+        .del { background: #b3432f; width: auto; margin: 0; padding: 6px 12px; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { text-align: left; padding: 10px; border-bottom: 1px solid #e1e9e6; }
+        th { color: #3d4f58; }
+        .ok { background: #dff1ec; color: #1d5a4d; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Admin Panel</h2>
+        <div>{{ username }} (Admin) <a href="/admin/careers">Careers and Skills</a> 
+        <a href="/logout">Logout</a></div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <h3>Add a quiz question</h3>
+            {% if msg %}<div class="ok">{{ msg }}</div>{% endif %}
+            <form method="POST">
+                <label>Question</label>
+                <input type="text" name="question" required>
+                <div class="grid">
+                    <div><label>Option A</label><input type="text" name="option_a" required></div>
+                    <div><label>Option B</label><input type="text" name="option_b" required></div>
+                    <div><label>Option C</label><input type="text" name="option_c" required></div>
+                    <div><label>Option D</label><input type="text" name="option_d" required></div>
+                </div>
+                <label>Correct answer (must match one option exactly)</label>
+                <input type="text" name="answer" required>
+                <label>Category</label>
+                <select name="category">
+                    <option value="coding">coding</option>
+                    <option value="maths">maths</option>
+                    <option value="design">design</option>
+                </select>
+                <button type="submit" name="add_question">Add question</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>All quiz questions ({{ questions|length }})</h3>
+            <table>
+                <tr><th>Category</th><th>Question</th><th>Answer</th><th></th></tr>
+                {% for q in questions %}
+                <tr>
+                    <td>{{ q.category }}</td>
+                    <td>{{ q.question }}</td>
+                    <td>{{ q.answer }}</td>
+                    <td>
+                        <form method="POST" action="/admin/delete_question/{{ q.id }}">
+                            <button type="submit" class="del">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>

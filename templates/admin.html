@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - CareerPath AI</title>
+    <style>
+        :root {
+            --bg-page: #f5f6ff;
+            --bg-card: #ffffff;
+            --primary: #6338f5;
+            --primary-dark: #4923d4;
+            --primary-soft: #ede9fe;
+            --blue: #2563eb;
+            --text-main: #181a31;
+            --text-muted: #5a607f;
+            --border-light: #e3e7f7;
+            --danger-bg: #ffe4e6;
+            --danger-text: #e11d48;
+            --danger-border: #fecdd3;
+            --shadow-card: 0 12px 32px rgba(28, 24, 84, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 12% 8%, rgba(124, 58, 237, 0.12), transparent 36%),
+                radial-gradient(circle at 88% 12%, rgba(37, 99, 235, 0.1), transparent 38%),
+                var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #161347 0%, #261f6e 55%, #1b2868 100%);
+            color: #ffffff;
+            padding: 15px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            box-shadow: 0 6px 22px rgba(18, 15, 58, 0.18);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .navbar h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar h2::before {
+            content: "🎓";
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            display: grid;
+            place-items: center;
+            font-size: 16px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .admin-badge {
+            background: rgba(255, 255, 255, 0.12);
+            color: #e0e7ff;
+            padding: 6px 13px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 7px 15px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .navbar a[href="/logout"] {
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .wrap {
+            max-width: 1060px;
+            margin: 32px auto 52px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 26px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #4f46e5, #2563eb);
+        }
+
+        h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #26294a;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 14px;
+            margin-top: 6px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            background: #f9faff;
+            color: var(--text-main);
+            font-size: 0.94rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 56, 245, 0.13);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 18px;
+        }
+
+        button[name="add_question"] {
+            background: linear-gradient(90deg, #6d28d9 0%, #4f46e5 55%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            padding: 13px 22px;
+            margin-top: 22px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.96rem;
+            width: 100%;
+            box-shadow: 0 10px 24px rgba(79, 70, 229, 0.3);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        button[name="add_question"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(79, 70, 229, 0.4);
+        }
+
+        .del {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+            border: 1px solid var(--danger-border);
+            width: auto;
+            margin: 0;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .del:hover {
+            background: #fecdd3;
+            color: #be123c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid #edf0fb;
+        }
+
+        th {
+            color: #383d63;
+            font-weight: 700;
+            background: #f8f9ff;
+        }
+
+        tr:hover td {
+            background: #fafbff;
+        }
+
+        .ok {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            padding: 11px 15px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                padding: 14px 18px;
+            }
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Admin Panel</h2>
+        <div class="nav-right">
+            <span class="admin-badge">{{ username }} (Admin)</span>
+            <a href="/admin/careers">Careers and Skills</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <h3>Add a quiz question</h3>
+            {% if msg %}<div class="ok">{{ msg }}</div>{% endif %}
+            <form method="POST">
+                <label>Question</label>
+                <input type="text" name="question" required>
+                <div class="grid">
+                    <div><label>Option A</label><input type="text" name="option_a" required></div>
+                    <div><label>Option B</label><input type="text" name="option_b" required></div>
+                    <div><label>Option C</label><input type="text" name="option_c" required></div>
+                    <div><label>Option D</label><input type="text" name="option_d" required></div>
+                </div>
+                <label>Correct answer (must match one option exactly)</label>
+                <input type="text" name="answer" required>
+                <label>Category</label>
+                <select name="category">
+                    <option value="coding">coding</option>
+                    <option value="maths">maths</option>
+                    <option value="design">design</option>
+                </select>
+                <button type="submit" name="add_question">Add question</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>All quiz questions ({{ questions|length }})</h3>
+            <table>
+                <tr><th>Category</th><th>Question</th><th>Answer</th><th></th></tr>
+                {% for q in questions %}
+                <tr>
+                    <td>{{ q.category }}</td>
+                    <td>{{ q.question }}</td>
+                    <td>{{ q.answer }}</td>
+                    <td>
+                        <form method="POST" action="/admin/delete_question/{{ q.id }}">
+                            <button type="submit" class="del">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CareerPath AI{% endblock %}</title>
+    <style>
+        :root {
+            --navy: #1c1854;
+            --purple: #6338f5;
+            --purple-dark: #4923d4;
+            --purple-soft: #ede9fe;
+            --blue: #2563eb;
+            --bg: #f6f8ff;
+            --line: #e2e7f7;
+            --muted: #5a607f;
+            --text: #181a31;
+            --danger: #dc2626;
+            --shadow: 0 10px 28px rgba(28, 24, 84, 0.06);
+        }
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        a { color: var(--purple); text-decoration: none; }
+
+        /* Navbar matching CareerPath AI theme */
+        .nav {
+            background: linear-gradient(90deg, #161347 0%, #261f6e 55%, #1b2868 100%);
+            color: #ffffff;
+            padding: 13px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 6px 22px rgba(18, 15, 58, 0.18);
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+        .brand {
+            font-weight: 800;
+            color: #ffffff;
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            letter-spacing: -0.01em;
+        }
+        .brand::before {
+            content: "🎓";
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            display: grid;
+            place-items: center;
+            font-size: 15px;
+        }
+        .nav-links { display: flex; align-items: center; gap: 10px; font-size: 14px; flex-wrap: wrap; }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.88);
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 999px;
+            transition: all 0.2s ease;
+        }
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+        .nav-user {
+            color: #e0e7ff;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 999px;
+        }
+        .nav-links a.logout {
+            background: rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            font-weight: 600;
+        }
+        .nav-links a.logout:hover {
+            background: rgba(239, 68, 68, 0.28);
+            border-color: rgba(254, 202, 202, 0.5);
+        }
+
+        .page { flex: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 32px 20px; }
+        .page-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+        h1 { font-size: 26px; font-weight: 800; color: var(--navy); }
+        h3 { color: var(--navy); font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .muted { color: var(--muted); font-size: 14px; }
+
+        /* Cards */
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        .card.accent { border-top: 4px solid var(--purple); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .mini {
+            background: #f8f9ff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+        }
+        .mini h4 { color: var(--navy); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+        .mini .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary {
+            background: linear-gradient(90deg, #6d28d9 0%, #4f46e5 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+        }
+        .btn-primary:hover { box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35); }
+        .btn-gray { background: #5a607f; color: #ffffff; }
+        .btn-outline {
+            background: #ffffff;
+            color: var(--purple);
+            border: 1.5px solid var(--purple);
+        }
+        .btn-block { width: 100%; margin-top: 14px; }
+        .nav-links a.btn { padding: 7px 16px; }
+
+        /* Tags and badges */
+        .tag {
+            display: inline-block;
+            background: var(--purple-soft);
+            color: var(--purple-dark);
+            padding: 4px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            margin: 2px 3px 2px 0;
+            font-weight: 600;
+        }
+        .tag.gap { background: #fee2e2; color: #b91c1c; }
+        .badge {
+            display: inline-block;
+            background: var(--purple-soft);
+            color: var(--purple-dark);
+            padding: 4px 11px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+
+        /* Forms */
+        label { display: block; margin-top: 14px; font-weight: 600; font-size: 13px; color: #2d3154; }
+        select, input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 10px 14px;
+            margin-top: 6px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            background: #fafaff;
+            color: var(--text);
+            font-size: 14px;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--purple);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 56, 245, 0.12);
+        }
+        .checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin-top: 8px;
+            background: #f8f9ff;
+            border: 1px solid var(--line);
+            padding: 14px;
+            border-radius: 12px;
+        }
+        .checks label { margin: 0; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+        /* Alerts */
+        .alert {
+            background: var(--purple-soft);
+            color: var(--purple-dark);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .alert.warn { background: #fef3c7; color: #92400e; }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+        th { color: #3b4066; font-weight: 700; }
+        tr.best td { background: var(--purple-soft); font-weight: 700; color: var(--navy); }
+
+        /* Roadmap steps and bars */
+        .step {
+            background: #f8f9ff;
+            border-left: 4px solid var(--purple);
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .step strong { display: block; color: var(--navy); margin-bottom: 3px; }
+        .bar-row { margin-bottom: 14px; font-size: 14px; }
+        .bar { background: #e8ecfa; border-radius: 999px; height: 18px; margin-top: 6px; overflow: hidden; }
+        .bar > div {
+            background: linear-gradient(90deg, #6d28d9, #2563eb);
+            height: 100%;
+            color: #ffffff;
+            font-size: 11px;
+            line-height: 18px;
+            text-align: right;
+            padding-right: 8px;
+            font-weight: 700;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #100e38 0%, #1c1759 100%);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.84);
+            font-size: 12.5px;
+            padding: 18px 24px;
+            margin-top: auto;
+        }
+
+        @media (max-width: 720px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .nav { padding: 12px 18px; flex-wrap: wrap; gap: 8px; }
+        }
+
+        /* Home page style polish for Dashboard, Assessment & Mentors */
+.page {
+    max-width: 1120px;
+}
+
+.card {
+    border-radius: 20px;
+    padding: 26px 28px;
+    border: 1px solid #e4e8f8;
+    box-shadow: 0 12px 32px rgba(28, 24, 84, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.card.accent::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #7c3aed, #4f46e5, #2563eb, #06b6d4);
+}
+
+/* Keep 3 career path cards in a clean single row on desktop */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.mini {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+    border: 1px solid #e3e7f7;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(28, 24, 84, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mini:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(79, 70, 229, 0.1);
+}
+
+/* Job market bars aligned cleanly */
+.bar-row {
+    margin-bottom: 16px;
+}
+
+.bar-row:last-child {
+    margin-bottom: 0;
+}
+
+.bar {
+    background: #eef1fc;
+    border-radius: 999px;
+    height: 22px;
+    margin-top: 7px;
+    overflow: hidden;
+    padding: 2px;
+}
+
+.bar > div {
+    background: linear-gradient(90deg, #6d28d9 0%, #4f46e5 60%, #2563eb 100%);
+    height: 100%;
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 11.5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+@media (max-width: 820px) {
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="nav">
+        <a class="brand" href="/">CareerPath AI</a>
+        <div class="nav-links">
+            {% if session.get('username') %}
+                {% if session.get('role') == 'Admin' %}
+                    <a href="/admin">Quiz questions</a>
+                    <a href="/admin/careers">Careers and skills</a>
+                {% elif session.get('role') == 'Mentor' %}
+                    <a href="/mentor">My sessions</a>
+                {% else %}
+                    <a href="/student">Dashboard</a>
+                    <a href="/assessment">Skill assessment</a>
+                    <a href="/mentors">Mentors</a>
+                {% endif %}
+                <span class="nav-user">{{ session.get('username') }}</span>
+                <a class="logout" href="/logout">Log out</a>
+            {% else %}
+                <a href="/">Home</a>
+                <a href="/login">Log in</a>
+                <a class="btn btn-primary" href="/register" style="color:white;">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer>Institute of Technology, University of Moratuwa &middot; AI Powered Career Path Recommendation &amp; Skills-Gap Analysis Platform</footer>
+</body>
+</html>

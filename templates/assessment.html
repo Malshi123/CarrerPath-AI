@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Skill Assessment - CareerPath AI{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="page-head">
+        <h1>Skill assessment</h1>
+        <a class="btn btn-gray" href="/student">Back to dashboard</a>
+    </div>
+
+    {% if error %}<div class="alert warn">{{ error }}</div>{% endif %}
+
+    <div class="card accent">
+        <h3>Step 1: Aptitude quiz</h3>
+        {% if quiz_done %}
+            <p class="muted" style="margin-bottom:12px;">You have completed the quiz. You can retake it any time to update your score.</p>
+            <a class="btn btn-outline" href="/quiz">Retake the quiz</a>
+        {% else %}
+            <p class="muted" style="margin-bottom:12px;">A short quiz on coding, maths and design. Your marks are part of your final career score.</p>
+            <a class="btn btn-primary" href="/quiz">Take the quiz</a>
+        {% endif %}
+    </div>
+
+    <form method="POST">
+        <div class="card accent">
+            <h3>Step 2: Your interests</h3>
+            <label>How much do you enjoy coding and logic?</label>
+            <select name="coding">
+                <option value="5">5 - Very high (love coding)</option>
+                <option value="3">3 - Medium</option>
+                <option value="1">1 - Low</option>
+            </select>
+
+            <label>How good are you at maths and data analysis?</label>
+            <select name="maths">
+                <option value="5">5 - Very high</option>
+                <option value="3">3 - Medium</option>
+                <option value="1">1 - Low</option>
+            </select>
+
+            <label>Do you like designing and creativity (UI/UX)?</label>
+            <select name="design">
+                <option value="1">1 - Low</option>
+                <option value="3">3 - Medium</option>
+                <option value="5">5 - Very high (creative)</option>
+            </select>
+        </div>
+
+        <div class="card accent">
+            <h3>Step 3: Skills you already have</h3>
+            <div class="checks">
+                {% for s in skills %}
+                    <label><input type="checkbox" name="skills" value="{{ s }}"> {{ s }}</label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="padding:14px;">Analyze my career path</button>
+    </form>
+</div>
+{% endblock %}

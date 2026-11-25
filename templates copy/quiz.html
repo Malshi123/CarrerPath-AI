@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aptitude Quiz - AI Career Platform</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        body { background: #eef3f1; color: #1a2a33; padding: 30px 15px; }
+        .wrap { max-width: 700px; margin: auto; }
+        h1 { color: #14313f; margin-bottom: 6px; }
+        .sub { color: #5d6f78; margin-bottom: 20px; }
+        .q { background: white; border: 1.5px solid #cfdad6; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+        .q p { font-weight: 600; margin-bottom: 10px; }
+        .q label { display: block; padding: 8px 0; cursor: pointer; }
+        button { background: #2f7d6d; color: white; border: none; padding: 14px; width: 100%;
+                 border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #276b5d; }
+        a { color: #2f7d6d; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <p><a href="/student">&larr; Back to dashboard</a></p>
+        <h1>Aptitude Quiz</h1>
+        <p class="sub">Answer all {{ questions|length }} questions. Your score helps us match careers.</p>
+
+        <form method="POST">
+            {% for q in questions %}
+                {% set qi = loop.index0 %}
+                <div class="q">
+                    <p>{{ loop.index }}. {{ q.question }}</p>
+                    {% for opt in q.options %}
+                        <label>
+                            <input type="radio" name="q{{ qi }}" value="{{ opt }}" required> {{ opt }}
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit">Submit quiz</button>
+        </form>
+    </div>
+</body>
+</html>

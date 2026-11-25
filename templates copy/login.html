@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - AI Career Platform</title>
+    <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+    body {
+        background: #14313f;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .login-card {
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        width: 380px;
+        text-align: center;
+    }
+    .login-card h1 { font-size: 40px; margin-bottom: 10px; }
+    .login-card h2 { color: #14313f; margin-bottom: 5px; }
+    .login-card p { color: #5d6f78; font-size: 13px; margin-bottom: 25px; }
+
+    label { display: block; text-align: left; font-weight: 600; font-size: 13px; color: #3d4f58; margin-top: 15px; }
+    input, select {
+        width: 100%; padding: 12px; margin-top: 6px;
+        border: 1.5px solid #cfdad6; border-radius: 6px; font-size: 14px;
+    }
+    input:focus, select:focus { border-color: #2f7d6d; outline: none; }
+
+    button {
+        background: #2f7d6d; color: white; border: none; padding: 12px; margin-top: 25px;
+        border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;
+    }
+    button:hover { background: #276b5d; }
+    .error { background: #fbe9e5; color: #b3432f; padding: 8px; border-radius: 6px; font-size: 13px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h1>🎓</h1>
+        <h2>AI Career Navigator</h2>
+        <p>Institute of Technology University of Moratuwa</p>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <label>👤 Select Role</label>
+            <select name="role">
+                <option value="Student">Student</option>
+                <option value="Mentor">Industry Mentor</option>
+                <option value="Admin">Admin</option>
+            </select>
+
+            <label>📧 Username</label>
+            <input type="text" name="username" placeholder="Enter username (e.g. nethsarani)" required>
+
+            <label>🔑 Password</label>
+            <input type="password" name="password" placeholder="Enter password (e.g. 1234)" required>
+
+            <button type="submit">🚀 Login to Platform</button>
+        </form>
+        <p style="margin-top:18px;font-size:13px;color:#5d6f78;">New here? <a href="/register" style="color:#2f7d6d;font-weight:bold;text-decoration:none;">Create an account</a></p>
+    </div>
+
+</body>
+</html>

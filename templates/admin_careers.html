@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers and skills - CareerPath AI Admin</title>
+    <style>
+        :root {
+            --bg-page: #f5f6ff;
+            --bg-card: #ffffff;
+            --primary: #6338f5;
+            --primary-dark: #4923d4;
+            --primary-soft: #ede9fe;
+            --blue: #2563eb;
+            --text-main: #181a31;
+            --text-muted: #5a607f;
+            --border-light: #e3e7f7;
+            --danger-bg: #ffe4e6;
+            --danger-text: #e11d48;
+            --danger-border: #fecdd3;
+            --shadow-card: 0 12px 32px rgba(28, 24, 84, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 12% 8%, rgba(124, 58, 237, 0.12), transparent 36%),
+                radial-gradient(circle at 88% 12%, rgba(37, 99, 235, 0.1), transparent 38%),
+                var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #161347 0%, #261f6e 55%, #1b2868 100%);
+            color: #ffffff;
+            padding: 15px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            box-shadow: 0 6px 22px rgba(18, 15, 58, 0.18);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .navbar h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar h2::before {
+            content: "🎓";
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            display: grid;
+            place-items: center;
+            font-size: 16px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .admin-badge {
+            background: rgba(255, 255, 255, 0.12);
+            color: #e0e7ff;
+            padding: 6px 13px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 7px 15px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .navbar a[href="/logout"] {
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .wrap {
+            max-width: 1060px;
+            margin: 32px auto 52px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 26px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #4f46e5, #2563eb);
+        }
+
+        h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #26294a;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 11px 14px;
+            margin-top: 6px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            background: #f9faff;
+            color: var(--text-main);
+            font-size: 0.94rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 56, 245, 0.13);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 18px;
+        }
+
+        .checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 14px;
+            margin-top: 10px;
+            background: #f8f9ff;
+            border: 1px solid var(--border-light);
+            padding: 16px;
+            border-radius: 14px;
+        }
+
+        .checks label {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            padding: 7px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .checks label:hover {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        .checks input[type="checkbox"] {
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        button[type="submit"]:not(.del) {
+            background: linear-gradient(90deg, #6d28d9 0%, #4f46e5 55%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            padding: 13px 22px;
+            margin-top: 22px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.96rem;
+            width: 100%;
+            box-shadow: 0 10px 24px rgba(79, 70, 229, 0.3);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        button[type="submit"]:not(.del):hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(79, 70, 229, 0.4);
+        }
+
+        .del {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+            border: 1px solid var(--danger-border);
+            width: auto;
+            margin: 0;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .del:hover {
+            background: #fecdd3;
+            color: #be123c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid #edf0fb;
+            vertical-align: middle;
+        }
+
+        th {
+            color: #383d63;
+            font-weight: 700;
+            background: #f8f9ff;
+        }
+
+        tr:hover td {
+            background: #fafbff;
+        }
+
+        .ok {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px solid #ddd6fe;
+        }
+
+        .err {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px solid var(--danger-border);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            padding: 4px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px 3px 2px 0;
+        }
+
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                padding: 14px 18px;
+            }
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Admin panel: Careers & Skills</h2>
+        <div class="nav-right">
+            <span class="admin-badge">{{ username }} (Admin)</span>
+            <a href="/admin/careers">Careers and Skills</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="wrap">
+        {% if msg %}<div class="ok">{{ msg }}</div>{% endif %}
+        {% if error %}<div class="err">{{ error }}</div>{% endif %}
+
+        <div class="card">
+            <h3>Add a skill</h3>
+            <form method="POST">
+                <div class="grid">
+                    <div><label>Skill name</label><input type="text" name="skill_name" placeholder="Testing" required></div>
+                    <div><label>Course to learn it</label><input type="text" name="course" placeholder="Software Testing Basics" required></div>
+                </div>
+                <button type="submit" name="add_skill">Add skill</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Add a career</h3>
+            <form method="POST">
+                <div class="grid">
+                    <div><label>Career name</label><input type="text" name="career_name" placeholder="QA Engineer" required></div>
+                    <div>
+                        <label>Quiz category it matches</label>
+                        <select name="category">
+                            <option value="coding">coding</option>
+                            <option value="maths">maths</option>
+                            <option value="design">design</option>
+                        </select>
+                    </div>
+                </div>
+                <label>Skills this career needs</label>
+                <div class="checks">
+                    {% for s in skills %}
+                        <label><input type="checkbox" name="skill_ids" value="{{ s.id }}"> {{ s.name }}</label>
+                    {% endfor %}
+                </div>
+                <button type="submit" name="add_career">Add career</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Careers ({{ careers|length }})</h3>
+            <table>
+                <tr><th>Career</th><th>Quiz category</th><th>Skills</th><th></th></tr>
+                {% for c in careers %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.category }}</td>
+                    <td>{% for s in c.skills %}<span class="tag">{{ s }}</span>{% endfor %}</td>
+                    <td>
+                        <form method="POST" action="/admin/delete_career/{{ c.id }}">
+                            <button type="submit" class="del">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Skills ({{ skills|length }})</h3>
+            <table>
+                <tr><th>Skill</th><th>Course</th><th></th></tr>
+                {% for s in skills %}
+                <tr>
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.course }}</td>
+                    <td>
+                        <form method="POST" action="/admin/delete_skill/{{ s.id }}">
+                            <button type="submit" class="del">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>

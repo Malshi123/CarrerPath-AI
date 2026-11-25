@@ -2,46 +2,170 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login - AI Career Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CareerPath AI</title>
     <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-    body {
-        background: #14313f;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .login-card {
-        background: white;
-        padding: 40px;
-        border-radius: 8px;
-        width: 380px;
-        text-align: center;
-    }
-    .login-card h1 { font-size: 40px; margin-bottom: 10px; }
-    .login-card h2 { color: #14313f; margin-bottom: 5px; }
-    .login-card p { color: #5d6f78; font-size: 13px; margin-bottom: 25px; }
+        :root {
+            --bg-dark-1: #14113f;
+            --bg-dark-2: #241b6b;
+            --bg-dark-3: #17255a;
+            --card-bg: #ffffff;
+            --primary: #6338f5;
+            --primary-dark: #4923d4;
+            --text-main: #181a31;
+            --text-muted: #5a607f;
+            --border: #dfe4f5;
+            --danger-bg: #fee2e2;
+            --danger-text: #b91c1c;
+        }
 
-    label { display: block; text-align: left; font-weight: 600; font-size: 13px; color: #3d4f58; margin-top: 15px; }
-    input, select {
-        width: 100%; padding: 12px; margin-top: 6px;
-        border: 1.5px solid #cfdad6; border-radius: 6px; font-size: 14px;
-    }
-    input:focus, select:focus { border-color: #2f7d6d; outline: none; }
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-    button {
-        background: #2f7d6d; color: white; border: none; padding: 12px; margin-top: 25px;
-        border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;
-    }
-    button:hover { background: #276b5d; }
-    .error { background: #fbe9e5; color: #b3432f; padding: 8px; border-radius: 6px; font-size: 13px; margin-bottom: 10px; }
-</style>
+        body {
+            background:
+                radial-gradient(circle at 18% 20%, rgba(124, 58, 237, 0.35), transparent 42%),
+                radial-gradient(circle at 82% 78%, rgba(37, 99, 235, 0.32), transparent 45%),
+                linear-gradient(135deg, var(--bg-dark-1) 0%, var(--bg-dark-2) 55%, var(--bg-dark-3) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            padding: 36px 34px;
+            border-radius: 22px;
+            width: 100%;
+            max-width: 410px;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(9, 8, 30, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #7c3aed, #4f46e5, #2563eb);
+        }
+
+        .login-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #ede9fe, #dbeafe);
+            display: grid;
+            place-items: center;
+            font-size: 30px;
+            margin: 0 auto 12px;
+        }
+
+        .login-card h2 {
+            color: var(--text-main);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            color: #26294a;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 14px;
+            margin-top: 6px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            background: #f9faff;
+            color: var(--text-main);
+            font-size: 14px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 56, 245, 0.14);
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(90deg, #6d28d9 0%, #4f46e5 55%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            padding: 13px 20px;
+            margin-top: 24px;
+            border-radius: 999px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 15.5px;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(79, 70, 229, 0.34);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(79, 70, 229, 0.44);
+        }
+
+        .error {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .register-link {
+            margin-top: 18px;
+            margin-bottom: 0 !important;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
     <div class="login-card">
-        <h1>🎓</h1>
+        <div class="login-icon">🎓</div>
         <h2>AI Career Navigator</h2>
         <p>Institute of Technology University of Moratuwa</p>
 
@@ -54,6 +178,7 @@
             <select name="role">
                 <option value="Student">Student</option>
                 <option value="Mentor">Industry Mentor</option>
+                <option value="Admin">Admin</option>
             </select>
 
             <label>📧 Username</label>
@@ -64,7 +189,7 @@
 
             <button type="submit">🚀 Login to Platform</button>
         </form>
-        <p style="margin-top:18px;font-size:13px;color:#5d6f78;">New here? <a href="/register" style="color:#2f7d6d;font-weight:bold;text-decoration:none;">Create an account</a></p>
+        <p class="register-link">New here? <a href="/register">Create an account</a></p>
     </div>
 
 </body>

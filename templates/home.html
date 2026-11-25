@@ -1,0 +1,603 @@
+{% extends "base.html" %}
+{% block title %}CareerPath AI - Discover Your Future Path{% endblock %}
+
+{% block head %}
+<style>
+    :root {
+        --cp-purple: #6338f5;
+        --cp-violet: #7c3aed;
+        --cp-blue: #2563eb;
+        --cp-cyan: #06b6d4;
+        --cp-bg: #f6f8ff;
+        --cp-card: #ffffff;
+        --cp-ink: #181a31;
+        --cp-muted: #5a607f;
+        --cp-border: #e6eaf8;
+        --cp-shadow: 0 12px 32px rgba(25, 32, 85, 0.07);
+    }
+
+    body {
+        background-color: var(--cp-bg);
+        color: var(--cp-ink);
+    }
+
+    /* Hero Banner */
+    .cp-hero {
+        position: relative;
+        background-image:
+            linear-gradient(
+                90deg,
+                rgba(16, 18, 56, 0.25) 0%,
+                rgba(23, 21, 74, 0.62) 45%,
+                rgba(18, 26, 79, 0.55) 100%
+            ),
+            url("{{ url_for('static', filename='hero-bg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        color: #ffffff;
+        padding: 86px 24px 115px;
+        overflow: hidden;
+    }
+
+    .cp-hero-grid {
+        position: relative;
+        z-index: 2;
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 0.72fr 1.28fr 0.6fr;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .cp-hero-copy {
+        text-align: left;
+    }
+
+    .cp-hero h1 {
+        color: #ffffff;
+        font-size: 50px;
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        margin: 0 0 18px;
+        text-shadow: 0 4px 20px rgba(10, 12, 40, 0.35);
+    }
+
+    .cp-hero h1 .cp-grad-word {
+        background: linear-gradient(90deg, #8b7bff 0%, #38bdf8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        border-bottom: 3px solid #38bdf8;
+        padding-bottom: 2px;
+    }
+
+    .cp-hero p {
+        font-size: 16px;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.92);
+        max-width: 500px;
+        margin: 0 0 28px;
+    }
+
+    .cp-hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .cp-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 26px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 700;
+        color: #ffffff;
+        background: linear-gradient(90deg, #7c3aed 0%, #2563eb 55%, #06b6d4 100%);
+        box-shadow: 0 10px 26px rgba(59, 130, 246, 0.38);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cp-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 32px rgba(59, 130, 246, 0.5);
+    }
+
+    .cp-btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(8px);
+    }
+
+    /* Floating Glass Icons on Right */
+    .cp-floating-icons {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        height: 230px;
+    }
+
+    .cp-glass-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        box-shadow: 0 10px 25px rgba(10, 15, 50, 0.22);
+    }
+
+    .cp-glass-icon:nth-child(1) { margin-right: 75px; }
+    .cp-glass-icon:nth-child(2) { margin-right: 28px; }
+    .cp-glass-icon:nth-child(3) { margin-right: 0; }
+
+    .cp-hero-wave {
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        line-height: 0;
+        z-index: 1;
+    }
+
+    .cp-hero-wave svg {
+        width: 100%;
+        height: 64px;
+        display: block;
+    }
+
+    /* Sections */
+    .cp-section {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 46px 20px 12px;
+    }
+
+    .cp-section-head {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .cp-title-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 6px;
+    }
+
+    .cp-line {
+        width: 30px;
+        height: 2px;
+        background: #cbd5e1;
+        border-radius: 2px;
+    }
+
+    .cp-section h2 {
+        color: var(--cp-ink);
+        font-size: 28px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .cp-section .cp-lead {
+        color: var(--cp-muted);
+        font-size: 15px;
+        margin: 0;
+    }
+
+    /* 6 Feature Cards matching reference */
+    .cp-features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .cp-feature {
+    background: var(--cp-card);
+    border: 1px solid var(--cp-border);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--cp-shadow);
+    text-decoration: none;
+    color: inherit;
+    min-width: 0; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+
+    .cp-feature:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 36px rgba(45, 35, 115, 0.11);
+    }
+
+    .cp-icon-box {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        font-size: 23px;
+        flex-shrink: 0;
+    }
+
+    .bg-c1 { background: #e0f2fe; }
+    .bg-c2 { background: #dcfce7; }
+    .bg-c3 { background: #ffedd5; }
+    .bg-c4 { background: #f3e8ff; }
+    .bg-c5 { background: #cffafe; }
+    .bg-c6 { background: #d1fae5; }
+
+    .cp-feature-body {
+    flex: 1;
+    min-width: 0;
+    }
+
+    
+
+    .cp-badge {
+        display: inline-grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .b-1 { background: #dbeafe; color: #1d4ed8; }
+    .b-2 { background: #dcfce7; color: #15803d; }
+    .b-3 { background: #ffedd5; color: #c2410c; }
+    .b-4 { background: #f3e8ff; color: #6b21a8; }
+    .b-5 { background: #cffafe; color: #0e7490; }
+    .b-6 { background: #d1fae5; color: #047857; }
+
+    .cp-feature h4 {
+    color: var(--cp-ink);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    line-height: 1.3;
+    }
+
+    .cp-feature p {
+    color: var(--cp-muted);
+    font-size: 12.8px;
+    line-height: 1.45;
+    margin: 0;
+    }
+
+    .cp-arrow {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #eef2ff;
+        color: #4f46e5;
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    /* 4 How It Works Steps */
+    .cp-steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
+    .cp-how {
+        background: var(--cp-card);
+        border: 1px solid var(--cp-border);
+        border-radius: 18px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 8px 24px rgba(25, 32, 85, 0.05);
+    }
+
+    .cp-how .cp-num {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7c3aed, #2563eb);
+        color: #ffffff;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 6px 16px rgba(99, 56, 245, 0.25);
+    }
+
+    .cp-how h4 {
+        color: var(--cp-ink);
+        margin: 0 0 3px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .cp-how p {
+        color: var(--cp-muted);
+        font-size: 13px;
+        margin: 0;
+    }
+
+    /* Bottom CTA */
+    .cp-cta {
+        max-width: 720px;
+        margin: 46px auto 52px;
+        padding: 0 20px;
+    }
+
+    .cp-cta-box {
+        background: #ffffff;
+        border: 1px solid #e0e7ff;
+        border-radius: 999px;
+        padding: 18px 26px 18px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        box-shadow: 0 14px 36px rgba(79, 70, 229, 0.12);
+    }
+
+    .cp-cta-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .cp-cta-rocket {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #eef2ff;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+    }
+
+    .cp-cta-box h2 {
+        color: var(--cp-ink);
+        font-size: 19px;
+        font-weight: 800;
+        margin: 0 0 2px;
+    }
+
+    .cp-cta-box p {
+        color: var(--cp-muted);
+        font-size: 13.5px;
+        margin: 0;
+    }
+
+    @media (max-width: 960px) {
+        .cp-hero-grid {
+            grid-template-columns: 1fr;
+        }
+        .cp-hero-copy {
+            text-align: center;
+        }
+        .cp-hero p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cp-hero-actions {
+            justify-content: center;
+        }
+        .cp-floating-icons {
+            display: none;
+        }
+        .cp-features, .cp-steps {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .cp-features, .cp-steps {
+            grid-template-columns: 1fr;
+        }
+        .cp-hero h1 {
+            font-size: 34px;
+        }
+        .cp-cta-box {
+            border-radius: 22px;
+            justify-content: center;
+            text-align: center;
+        }
+    }
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="cp-hero">
+    <div class="cp-hero-grid">
+        <div></div>
+
+        <div class="cp-hero-copy">
+            <h1>Discover your<br><span class="cp-grad-word">future</span> path</h1>
+            <p>Find the right career based on your skills, aptitude and interests, see exactly what you are missing, and get a step-by-step plan to close the gap.</p>
+            <div class="cp-hero-actions">
+                {% if session.get('username') %}
+                    <a class="cp-btn-primary" href="/student">Go to my dashboard →</a>
+                {% else %}
+                    <a class="cp-btn-primary" href="/register">Get started →</a>
+                    <a class="cp-btn-outline" href="/login">Log in</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="cp-floating-icons">
+            <div class="cp-glass-icon">💼</div>
+            <div class="cp-glass-icon">📈</div>
+            <div class="cp-glass-icon">🎯</div>
+        </div>
+    </div>
+
+    <div class="cp-hero-wave">
+        <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+            <path
+                d="M0,45 C320,95 620,5 960,45 C1180,70 1330,65 1440,38 L1440,90 L0,90 Z"
+                fill="#f6f8ff"
+            ></path>
+        </svg>
+    </div>
+</section>
+
+<section class="cp-section">
+    <div class="cp-section-head">
+        <div class="cp-title-wrap">
+            <span class="cp-line"></span>
+            <h2>What you get</h2>
+            <span class="cp-line"></span>
+        </div>
+        <p class="cp-lead">Everything a student needs to choose a career with confidence.</p>
+    </div>
+
+    <div class="cp-features">
+        <a href="/assessment" class="cp-feature">
+            <div class="cp-icon-box bg-c1">📊</div>
+            <div class="cp-feature-body">
+                <span class="cp-badge b-1">1</span>
+                <h4>Skill and aptitude assessment</h4>
+                <p>Take a short quiz and tell us what you enjoy. We combine both with the skills you already have.</p>
+            </div>
+            <span class="cp-arrow">→</span>
+        </a>
+
+        <a href="/student" class="cp-feature">
+            <div class="cp-icon-box bg-c2">⭐</div>
+            <div class="cp-feature-body">
+                <span class="cp-badge b-2">2</span>
+                <h4>AI career recommendation</h4>
+                <p>See how well you match each career, with the reason behind every score.</p>
+            </div>
+            <span class="cp-arrow">→</span>
+        </a>
+
+        <a href="/student" class="cp-feature">
+            <div class="cp-icon-box bg-c3">🗺️</div>
+            <div class="cp-feature-body">
+                <span class="cp-badge b-3">3</span>
+                <h4>Skills-gap roadmap</h4>
+                <p>Find the skills you are missing and get a course for each one.</p>
+            </div>
+            <span class="cp-arrow">→</span>
+        </a>
+
+        <a href="/student" class="cp-feature">
+            <div class="cp-icon-box bg-c4">📈</div>
+            <div class="cp-feature-body">
+                <span class="cp-badge b-4">4</span>
+                <h4>Job market insights</h4>
+                <p>See which skill areas are in high demand in Sri Lanka right now.</p>
+            </div>
+            <span class="cp-arrow">→</span>
+        </a>
+
+        <a href="/mentors" class="cp-feature">
+            <div class="cp-icon-box bg-c5">📅</div>
+            <div class="cp-feature-body">
+                <span class="cp-badge b-5">5</span>
+                <h4>Mentor sessions</h4>
+                <p>Book a one-on-one session with an industry mentor or career counselor.</p>
+            </div>
+            <span class="cp-arrow">→</span>
+        </a>
+
+        <a href="/student" class="cp-feature">
+            <div class="cp-icon-box bg-c6">🛡️</div>
+            <div class="cp-feature-body">
+                <span class="cp-badge b-6">6</span>
+                <h4>Your data, your control</h4>
+                <p>Accounts are protected with hashed passwords and role-based access.</p>
+            </div>
+            <span class="cp-arrow">→</span>
+        </a>
+    </div>
+</section>
+
+<section class="cp-section">
+    <div class="cp-section-head">
+        <div class="cp-title-wrap">
+            <span class="cp-line"></span>
+            <h2>How it works</h2>
+            <span class="cp-line"></span>
+        </div>
+        <p class="cp-lead">Four simple steps.</p>
+    </div>
+
+    <div class="cp-steps">
+        <div class="cp-how">
+            <div class="cp-num">1</div>
+            <div>
+                <h4>Create an account</h4>
+                <p>Register as a student.</p>
+            </div>
+        </div>
+        <div class="cp-how">
+            <div class="cp-num">2</div>
+            <div>
+                <h4>Take the assessment</h4>
+                <p>Quiz, interests and your skills.</p>
+            </div>
+        </div>
+        <div class="cp-how">
+            <div class="cp-num">3</div>
+            <div>
+                <h4>See your results</h4>
+                <p>Best career, gaps and a roadmap.</p>
+            </div>
+        </div>
+        <div class="cp-how">
+            <div class="cp-num">4</div>
+            <div>
+                <h4>Talk to a mentor</h4>
+                <p>Book a guidance session.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cp-cta">
+    <div class="cp-cta-box">
+        <div class="cp-cta-left">
+            <div class="cp-cta-rocket">🚀</div>
+            <div>
+                <h2>Ready to find your path?</h2>
+                <p>It takes about five minutes.</p>
+            </div>
+        </div>
+        {% if session.get('username') %}
+            <a class="cp-btn-primary" href="/assessment">Take the skill assessment →</a>
+        {% else %}
+            <a class="cp-btn-primary" href="/register">Create a free account →</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Mentors - CareerPath AI{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="page-head">
+        <h1>Mentor consultation</h1>
+        <a class="btn btn-gray" href="/student">Back to dashboard</a>
+    </div>
+
+    {% if msg %}<div class="alert">{{ msg }}</div>{% endif %}
+
+    <div class="grid-2">
+        <div class="card accent">
+            <h3>Book a one-on-one session</h3>
+            <form method="POST">
+                <label>Industry mentor or career counselor</label>
+                <select name="mentor">
+                    {% for m in mentor_names %}
+                        <option value="{{ m }}">{{ m }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Preferred date</label>
+                <input type="date" name="date" required>
+
+                <label>Discussion topic or question</label>
+                <input type="text" name="topic" placeholder="E.g. How do I prepare for data science internships?" required>
+
+                <button type="submit" name="book_btn" class="btn btn-primary btn-block">Book guidance session</button>
+            </form>
+        </div>
+
+        <div class="card accent">
+            <h3>My bookings ({{ bookings|length }})</h3>
+            {% if bookings %}
+                {% for b in bookings %}
+                    <div class="step">
+                        <strong>{{ b.session_date }}</strong>
+                        {{ b.mentor }}<br>
+                        <span class="muted">Topic: {{ b.topic }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="muted">No bookings yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
